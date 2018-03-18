@@ -1,5 +1,6 @@
 package com.example.ali.smartcity;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     EditText username, password;
     Button login;
@@ -28,7 +29,21 @@ public class LoginActivity extends AppCompatActivity {
         login = (Button) findViewById(R.id.login);
         registerLink = (TextView) findViewById(R.id.register_link);
 
-
+        registerLink.setOnClickListener(this);
+        login.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.register_link:
+                //go to registration activity
+                Intent registerIntent = new Intent(this, RegisterActivity.class);
+                startActivity(registerIntent);
+                break;
+            case R.id.login:
+                break;
+
+        }
+    }
 }
