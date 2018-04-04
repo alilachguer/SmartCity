@@ -5,4 +5,21 @@
     <string name="password_hint">password</string>
     <string name="login_button">Log in</string>
     <string name="register_link"><u>don\'t have an account? register</u></string>
+    <string name="pseudonym">pseudonym</string>
+    <string name="register_title">create new account</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="mail">e-mail</string>
+    <string name="next">next</string>
+    <string name="cancel">Cancel</string>
+    <string name="birth_date_hint">birth date</string>
+    <string name="height_hint">height</string>
+    <string name="weight_hint">weight</string>
+    <string name="city_hint">city</string>
+    <string name="register_button">register</string>
+
+    <string-array name="gender_array">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
 </resources>
