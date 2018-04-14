@@ -3,14 +3,16 @@ package com.example.ali.smartcity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText username, password;
+    EditText email, password;
     Button login;
     TextView registerLink;
 
@@ -19,13 +21,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        username = (EditText) findViewById(R.id.username);
+        email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.register_password);
         login = (Button) findViewById(R.id.login);
         registerLink = (TextView) findViewById(R.id.register_link);
 
         registerLink.setOnClickListener(this);
         login.setOnClickListener(this);
+    }
+
+    private void loginUser(){
+        String loginEmail = email.getText().toString().trim();
+        String loginPassword = password.getText().toString().trim();
+
+        if(TextUtils.isEmpty(loginEmail) || TextUtils.isEmpty(loginPassword)){
+            Toast.makeText(this, "email or password empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
     }
 
     @Override
@@ -36,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(registerIntent);
         }
         else if (view == login){
-
+            loginUser();
         }
 
     }
