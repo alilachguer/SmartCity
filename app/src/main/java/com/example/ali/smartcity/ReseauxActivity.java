@@ -3,13 +3,11 @@ package com.example.ali.smartcity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+public class ReseauxActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        //commentaire
+        setContentView(R.layout.activity_reseaux);
     }
 }
