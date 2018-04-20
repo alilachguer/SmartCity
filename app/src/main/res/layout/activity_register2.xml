@@ -77,18 +77,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gender_register2" />
 
-    <EditText
-        android:id="@+id/city_register2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        android:hint="@string/city_hint"
+        android:layout_width="259dp"
+        android:layout_height="52dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:ems="10"
-        android:hint="@string/city_hint"
-        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/weight_register2" />
 
@@ -100,11 +101,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/button_background"
-        android:textColor="@drawable/button_text_color"
         android:text="@string/register_button"
+        android:textColor="@drawable/button_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/city_register2" />
+        app:layout_constraintTop_toBottomOf="@+id/place_autocomplete_fragment" />
 
 
 </android.support.constraint.ConstraintLayout>

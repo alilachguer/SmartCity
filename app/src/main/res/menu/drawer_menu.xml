@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_profile"
+            android:title="@string/profile"
+            ></item>
+        <item
+            android:id="@+id/item_settings"
+            android:title="@string/settings"
+            ></item>
+    </group>
+    <item android:title="pages">
+        <menu>
+            <item
+                android:title="@string/actualite"
+                android:id="@+id/item_actualite"
+                ></item>
+            <item
+                android:title="@string/reseaux"
+                android:id="@+id/item_reseaux"
+                ></item>
+            <item
+                android:title="@string/commerce"
+                android:id="@+id/item_commerce"
+                ></item>
+        </menu>
+    </item>
+</menu>

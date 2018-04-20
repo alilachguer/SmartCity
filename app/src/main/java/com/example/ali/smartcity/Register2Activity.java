@@ -10,6 +10,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +39,7 @@ public class Register2Activity extends AppCompatActivity implements View.OnClick
         date = (EditText) findViewById(R.id.birthdate_register2);
         height = (EditText) findViewById(R.id.height_register2);
         weight = (EditText) findViewById(R.id.weight_register2);
-        city = (EditText) findViewById(R.id.city_register2);
+        //city = (EditText) findViewById(R.id.city_register2);
         register = (Button) findViewById(R.id.button_register2);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -54,6 +58,24 @@ public class Register2Activity extends AppCompatActivity implements View.OnClick
 
     public void registerUser2(){
         infoUser = (InfoUser) getIntent().getParcelableExtra(RegisterActivity.USER_INFO);
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                //Log.i(TAG, "Place: " + place.getName());
+                infoUser.setCity(place.getName().toString());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                //Log.i(TAG, "An error occurred: " + status);
+            }
+        });
 
         infoUser.setDate(date.getText().toString().trim());
         infoUser.setHeight(height.getText().toString().trim());

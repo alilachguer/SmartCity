@@ -25,6 +25,10 @@
     <string name="trafic">etat trafic</string>
     <string name="actualiteV">actualite ville</string>
     <string name="agenda">agenda/alarme</string>
+    <string name="profile">my profile</string>
+    <string name="settings">settings</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 
 
     <string-array name="gender_array">

@@ -29,14 +29,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /**
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
-         */
         setContentView(R.layout.activity_login);
 
         email = (EditText) findViewById(R.id.email);
@@ -72,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     "Authentication Success.", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
                         }else {
                             Toast.makeText(LoginActivity.this,
                                     task.getException().getLocalizedMessage().toString(), Toast.LENGTH_SHORT).show();
