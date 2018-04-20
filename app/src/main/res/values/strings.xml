@@ -16,6 +16,16 @@
     <string name="weight_hint">weight</string>
     <string name="city_hint">city</string>
     <string name="register_button">register</string>
+    <string name="actualite">actualite</string>
+    <string name="commerce">commerce</string>
+    <string name="reseaux">reseaux sociaux</string>
+    <string name="publicite">publicite</string>
+    <string name="accueil">accueil</string>
+    <string name="moteo">meteo locale</string>
+    <string name="trafic">etat trafic</string>
+    <string name="actualiteV">actualite ville</string>
+    <string name="agenda">agenda/alarme</string>
+
 
     <string-array name="gender_array">
         <item>Male</item>

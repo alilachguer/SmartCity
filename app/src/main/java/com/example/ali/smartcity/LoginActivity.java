@@ -30,12 +30,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /**
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
-
+         */
         setContentView(R.layout.activity_login);
 
         email = (EditText) findViewById(R.id.email);
@@ -91,6 +92,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         else if (view == login){
             loginUser();
         }
-
     }
 }
