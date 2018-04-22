@@ -14,41 +14,90 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.support.v7.widget.Toolbar;
-import com.google.firebase.auth.FirebaseAuth;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         NewsFragment.OnFragmentInteractionListener,
         SocialFragment.OnFragmentInteractionListener,
         CommerceFragment.OnFragmentInteractionListener,
-        AdsFragment.OnFragmentInteractionListener
-{
+        AdsFragment.OnFragmentInteractionListener {
 
     FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
     TabLayout tabLayout;
-
+    DatabaseReference databaseReference;
+    TextView username, email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        if(firebaseAuth.getCurrentUser() != null){
+            firebaseUser = firebaseAuth.getCurrentUser();
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference().child("users");
+        }
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        View headerView = navigationView.getHeaderView(0);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        username = (TextView) headerView.findViewById(R.id.navigation_username);
+
+        email = (TextView) headerView.findViewById(R.id.navigation_email);
+        email.setText(firebaseUser.getEmail());
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot child : children) {
+                    InfoUser user = child.getValue(InfoUser.class);
+                    if(user.getE_mail().toString().equals(firebaseUser.getEmail().toString())){
+                        username.setText(user.username);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.drawer_open, R.string.drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.actualite));
@@ -66,20 +115,12 @@ public class MainActivity extends AppCompatActivity
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
             }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) { }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabReselected(TabLayout.Tab tab) { }
         });
-
-
-        firebaseAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -105,6 +146,12 @@ public class MainActivity extends AppCompatActivity
                 //envoie vers actualite
                 break;
                 //todo ...
+            case R.id.item_sign_out:
+                firebaseAuth.signOut();
+                Toast.makeText(getApplicationContext(), "signing out...", Toast.LENGTH_SHORT).show();
+                finish();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                break;
         }
 
         return true;

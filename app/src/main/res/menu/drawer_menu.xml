@@ -24,6 +24,10 @@
                 android:title="@string/commerce"
                 android:id="@+id/item_commerce"
                 ></item>
+            <item
+                android:title="@string/sign_out"
+                android:id="@+id/item_sign_out"
+                ></item>
         </menu>
     </item>
 </menu>

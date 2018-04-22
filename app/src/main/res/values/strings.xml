@@ -29,6 +29,7 @@
     <string name="settings">settings</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="sign_out">sign out</string>
 
 
     <string-array name="gender_array">
