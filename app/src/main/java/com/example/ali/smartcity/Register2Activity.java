@@ -1,6 +1,7 @@
 package com.example.ali.smartcity;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,9 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -82,11 +86,24 @@ public class Register2Activity extends AppCompatActivity implements View.OnClick
         infoUser.setWeight(weight.getText().toString().trim());
         infoUser.setGender(gender.getSelectedItem().toString());
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        databaseReference.child("users").child(user.getUid()).setValue(infoUser);
-        Toast.makeText(this, "user registered!!", Toast.LENGTH_LONG).show();
-        finish();
-        startActivity(new Intent(this, MainActivity.class));
+        firebaseAuth.createUserWithEmailAndPassword(infoUser.getE_mail(), infoUser.getPassword())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            databaseReference.child("users").child(user.getUid()).setValue(infoUser);
+                            Toast.makeText(getApplicationContext(), "user registered!!", Toast.LENGTH_LONG).show();
+                            finish();
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        }else {
+                            Toast.makeText(getApplicationContext(), task.getException().getLocalizedMessage().toString(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+
     }
 
     @Override

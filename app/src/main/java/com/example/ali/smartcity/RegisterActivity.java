@@ -73,33 +73,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         if(pass.equals(confirmpass)){
             infoUser = new InfoUser(email, pass, username);
-            firebaseAuth.createUserWithEmailAndPassword(infoUser.getE_mail(), infoUser.getPassword())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(RegisterActivity.this,
-                            "email and password registred successfully",
-                            Toast.LENGTH_SHORT).show();
-                    finish();
-                    Intent register2 = new Intent(RegisterActivity.this, Register2Activity.class);
-                    register2.putExtra(USER_INFO, infoUser);
-                    startActivity(register2);
-                }else {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(RegisterActivity.this,
-                            task.getException().getLocalizedMessage().toString(),
-                            Toast.LENGTH_SHORT).show();
-                }
-                }
-            });
+            progressBar.setVisibility(View.GONE);
+            finish();
+            Intent register2 = new Intent(RegisterActivity.this, Register2Activity.class);
+            register2.putExtra(USER_INFO, infoUser);
+            startActivity(register2);
         }
         else if(pass.length() < 6){
             Toast.makeText(this, "password too short", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
         }
         else {
             Toast.makeText(this, "error wrong password", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
         }
 
     }
