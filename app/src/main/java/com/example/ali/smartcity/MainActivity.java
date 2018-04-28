@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 for (DataSnapshot child : children) {
                     InfoUser user = child.getValue(InfoUser.class);
                     if(user.getE_mail().toString().equals(firebaseUser.getEmail().toString())){
-                        username.setText(user.username);
+                        username.setText(user.getUsername());
                     }
                 }
             }

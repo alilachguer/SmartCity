@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,12 +29,14 @@ import java.text.SimpleDateFormat;
 public class Register2Activity extends AppCompatActivity implements View.OnClickListener{
 
     Spinner gender;
-    EditText date, height, weight, city;
+    EditText date, height, weight;
     Button register;
     InfoUser infoUser;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     DatabaseReference databaseReference;
+    PlaceAutocompleteFragment autocompleteFragment;
+    String city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,6 @@ public class Register2Activity extends AppCompatActivity implements View.OnClick
         date = (EditText) findViewById(R.id.birthdate_register2);
         height = (EditText) findViewById(R.id.height_register2);
         weight = (EditText) findViewById(R.id.weight_register2);
-        //city = (EditText) findViewById(R.id.city_register2);
         register = (Button) findViewById(R.id.button_register2);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -57,23 +59,16 @@ public class Register2Activity extends AppCompatActivity implements View.OnClick
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gender.setAdapter(genderAdapter);
 
-        register.setOnClickListener(this);
-    }
-
-    public void registerUser2(){
-        infoUser = (InfoUser) getIntent().getParcelableExtra(RegisterActivity.USER_INFO);
-
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 //Log.i(TAG, "Place: " + place.getName());
-                infoUser.setCity(place.getName().toString());
+                Toast.makeText(getApplicationContext(), place.getName().toString(), Toast.LENGTH_SHORT).show();
+                city = place.getName().toString();
             }
-
             @Override
             public void onError(Status status) {
                 // TODO: Handle the error.
@@ -81,6 +76,14 @@ public class Register2Activity extends AppCompatActivity implements View.OnClick
             }
         });
 
+        register.setOnClickListener(this);
+    }
+
+    public void registerUser2(){
+        infoUser = (InfoUser) getIntent().getParcelableExtra(RegisterActivity.USER_INFO);
+
+        infoUser.setCity(city);
+        //infoUser.setCity("paris");
         infoUser.setDate(date.getText().toString().trim());
         infoUser.setHeight(height.getText().toString().trim());
         infoUser.setWeight(weight.getText().toString().trim());
