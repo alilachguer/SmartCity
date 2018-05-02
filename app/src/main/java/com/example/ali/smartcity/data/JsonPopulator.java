@@ -1,7 +1,8 @@
 package com.example.ali.smartcity.data;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public interface JsonPopulator {
-    void populate(JSONObject data);
+    void populate(JSONObject data) throws JSONException;
 }

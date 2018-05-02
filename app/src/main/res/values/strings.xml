@@ -31,6 +31,8 @@
     <string name="drawer_close">Close</string>
     <string name="sign_out">sign out</string>
     <string name="weather">Weather</string>
+    <string name="forecasts">forecasts</string>
+    <string name="na">N/A</string>
 
 
     <string name="open_weather_maps_app_id">fdd4aa25cb96c8bf1b00b1eb51893834</string>

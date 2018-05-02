@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/forecast_item_code"
+        android:layout_width="163dp"
+        android:layout_height="71dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_weight="1"
+        android:src="@drawable/icon_na"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/forecast_item_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/forecast_item_date"
+        android:layout_marginTop="32dp"
+        android:text="TextView"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/forecast_item_code"
+        app:layout_constraintHorizontal_bias="0.097"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/forecast_item_code" />
+
+    <TextView
+        android:id="@+id/forecast_item_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/forecast_item_code"
+        android:layout_marginTop="96dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/forecast_item_code"
+        app:layout_constraintTop_toBottomOf="@+id/forecast_item_code" />
+
+    <TextView
+        android:id="@+id/forecast_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="12dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/forecast_item_day"
+        app:layout_constraintTop_toBottomOf="@+id/forecast_item_day" />
+
+    <TextView
+        android:id="@+id/forecast_item_high"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/forecast_item_day"
+        android:layout_alignTop="@+id/forecast_item_low"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forecast_item_date" />
+
+    <TextView
+        android:id="@+id/forecast_item_low"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="87dp"
+        android:layout_marginTop="86dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.137"
+        app:layout_constraintStart_toEndOf="@+id/forecast_item_high"
+        app:layout_constraintTop_toBottomOf="@+id/forecast_item_date" />
+</RelativeLayout>
