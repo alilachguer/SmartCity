@@ -41,7 +41,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDv4MlYvheIlLRjT2xLqvTgWaoRiex5Ku4" />
 
-        <activity android:name=".WeatherActivity"></activity>
+        <activity android:name=".WeatherActivity" />
+        <activity android:name=".NewsActivity" />
+        <activity android:name=".ArticleReader" />
+        <activity android:name=".ChatRoom"></activity>
     </application>
 
 </manifest>

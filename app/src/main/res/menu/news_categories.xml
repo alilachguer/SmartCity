@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/languages">
+        <menu>
+            <item
+                android:title="@string/english"
+                android:id="@+id/item_english"
+                ></item>
+            <item
+                android:title="@string/french"
+                android:id="@+id/item_french"
+                ></item>
+        </menu>
+    </item>
+    <item android:title="@string/category">
+        <menu>
+            <item
+                android:title="@string/all"
+                android:id="@+id/item_all"
+                ></item>
+            <item
+                android:title="@string/sport"
+                android:id="@+id/item_sport"
+                ></item>
+            <item
+                android:title="@string/business"
+                android:id="@+id/item_business"
+                ></item>
+            <item
+                android:title="@string/science"
+                android:id="@+id/item_science"
+                ></item>
+            <item
+                android:title="@string/technology"
+                android:id="@+id/item_technology"
+                ></item>
+        </menu>
+    </item>
+</menu>

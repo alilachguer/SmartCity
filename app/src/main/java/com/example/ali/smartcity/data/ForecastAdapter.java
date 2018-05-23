@@ -66,7 +66,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
             textViewHigh = (TextView) itemView.findViewById(R.id.forecast_item_high);
             textViewLow = (TextView) itemView.findViewById(R.id.forecast_item_low);
             textViewDescription = (TextView) itemView.findViewById(R.id.forecast_item_desc);
-
         }
     }
 }

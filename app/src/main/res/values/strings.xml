@@ -33,20 +33,17 @@
     <string name="weather">Weather</string>
     <string name="forecasts">forecasts</string>
     <string name="na">N/A</string>
-
-
-    <string name="open_weather_maps_app_id">fdd4aa25cb96c8bf1b00b1eb51893834</string>
-    <string name="weather_sunny">&#xf00d;</string>
-    <string name="weather_clear_night">&#xf02e;</string>
-
-    <string name="weather_foggy">&#xf014;</string>
-    <string name="weather_cloudy">&#xf013;</string>
-    <string name="weather_rainy">&#xf019;</string>
-    <string name="weather_snowy">&#xf01b;</string>
-    <string name="weather_thunder">&#xf01e;</string>
-    <string name="weather_drizzle">&#xf01c;</string>
-
-    <string name="place_not_found">Sorry, no weather data found.</string>
+    <string name="news">News</string>
+    <string name="english">english</string>
+    <string name="french">french</string>
+    <string name="art">Art</string>
+    <string name="sport">Sport</string>
+    <string name="science">Science</string>
+    <string name="business">Business</string>
+    <string name="technology">Technology</string>
+    <string name="all">All</string>
+    <string name="languages">languages</string>
+    <string name="category">category</string>
 
 
     <string-array name="gender_array">
