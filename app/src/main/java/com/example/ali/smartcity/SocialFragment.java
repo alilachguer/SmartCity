@@ -1,13 +1,17 @@
 package com.example.ali.smartcity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ali.smartcity.data.Groupe;
+import com.example.ali.smartcity.data.GroupeAdapter;
 import com.example.ali.smartcity.data.InfoUser;
 import com.example.ali.smartcity.data.Message;
 import com.example.ali.smartcity.data.NewsAdapter;
@@ -61,7 +66,9 @@ public class SocialFragment extends Fragment {
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
     Query query;
-    List<InfoUser> users;
+    List<Groupe> groupes;
+    String groupeName;
+    FloatingActionButton floatingActionButton;
 
 
     // TODO: Rename and change types of parameters
@@ -91,9 +98,6 @@ public class SocialFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
-
     }
 
     @Override
@@ -102,20 +106,77 @@ public class SocialFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_social, container, false);
         listeGroupes = view.findViewById(R.id.groupes);
+        floatingActionButton = view.findViewById(R.id.ajouter_groupe);
 
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() != null){
             firebaseUser = firebaseAuth.getCurrentUser();
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference().child("social");
-            query = databaseReference;
         }
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("create a group");
+
+                final EditText input = new EditText(getContext());
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        groupeName = input.getText().toString();
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String exists = "";
+                                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                                for (DataSnapshot child: children){
+                                    Groupe groupe = child.getValue(Groupe.class);
+                                    if(groupe.getNom().equals(groupeName)){
+                                        exists = "existe";
+                                        Toast.makeText(getContext(), "le groupe existe deja :" + groupe.getNom(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                if (!exists.equals("existe")){
+                                    Groupe groupe = new Groupe();
+                                    groupe.setNom(groupeName);
+                                    //groupe.getMembres().getUsers().add(firebaseUser.getEmail());
+                                    groupe.getPosts().setMessage(new Message(firebaseUser.getEmail(), "hello"));
+                                    databaseReference.push()
+                                          .setValue(groupe);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }
+        });
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<Map<String, Groupe>> t = new GenericTypeIndicator<Map<String, Groupe>>() {};
-                Map<String, Groupe> map = dataSnapshot.getValue(t);
+                groupes = new ArrayList<Groupe>();
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    groupes.add(child.getValue(Groupe.class));
+                }
+                GroupeAdapter adapter = new GroupeAdapter(getActivity(), 0, (ArrayList<Groupe>) groupes);
+                listeGroupes.setAdapter(adapter);
             }
 
             @Override
@@ -124,26 +185,13 @@ public class SocialFragment extends Fragment {
             }
         });
 
-        FirebaseListOptions<Groupe> options = new FirebaseListOptions.Builder<Groupe>()
-                .setLayout(R.layout.news_item)
-                .setQuery(query, Groupe.class)
-                .setLifecycleOwner(this)
-                .build();
-
-        ListAdapter adapter = new FirebaseListAdapter<Groupe>(options)
-        {
-            @Override
-            protected void populateView(View view, Groupe groupe, int position) {
-                ((TextView)view.findViewById(R.id.news_item_title)).setText(groupe.nom);
-            }
-        };
-
-        listeGroupes.setAdapter(adapter);
-
         listeGroupes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startActivity(new Intent(getContext(), ChatRoom.class));
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Intent intent = new Intent(getContext(), ChatRoom.class);
+                TextView name = (TextView)view.findViewById(R.id.news_item_title);
+                intent.putExtra("groupe", name.getText());
+                startActivity(intent);
             }
         });
         return view;

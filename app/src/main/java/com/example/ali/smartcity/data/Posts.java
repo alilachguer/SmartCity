@@ -1,16 +1,22 @@
 package com.example.ali.smartcity.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Posts {
-    public List<Message> posts;
+    public Message message;
 
-    public List<Message> getPosts() {
-        return posts;
+    public Message getMessage() {
+        return message;
     }
 
-    public void setPosts(List<Message> posts) {
-        this.posts = posts;
+    public void setMessage(Message posts) {
+        this.message = posts;
     }
+
+    public Posts(){
+
+    }
+
 }
 

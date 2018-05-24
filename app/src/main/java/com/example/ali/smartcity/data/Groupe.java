@@ -5,9 +5,35 @@ import java.util.List;
 public class Groupe {
     public String nom;
 
+    public String id;
+
     public Posts posts;
 
+    public Membres membres;
+
+    public Membres getMembres() {
+        return membres;
+    }
+
+    public Groupe() {
+        this.posts = new Posts();
+        this.membres = new Membres();
+    }
+
+    public void setMembres(Membres membres) {
+        this.membres = membres;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public Posts getPosts() {
+
         return posts;
     }
 

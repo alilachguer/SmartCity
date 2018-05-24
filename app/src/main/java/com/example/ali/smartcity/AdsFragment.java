@@ -1,12 +1,50 @@
 package com.example.ali.smartcity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.example.ali.smartcity.data.AdsAdapter;
+import com.example.ali.smartcity.data.Groupe;
+import com.example.ali.smartcity.data.GroupeAdapter;
+import com.example.ali.smartcity.data.InfoUser;
+import com.example.ali.smartcity.data.Message;
+import com.example.ali.smartcity.data.Pub;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -23,6 +61,16 @@ public class AdsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    List<Pub> pubs;
+    RecyclerView listePub;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
+    String city;
+    FirebaseStorage storage;
+    StorageReference storageRef;
+    FloatingActionButton floatingActionButton;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -33,14 +81,7 @@ public class AdsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AdsFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static AdsFragment newInstance(String param1, String param2) {
         AdsFragment fragment = new AdsFragment();
@@ -64,7 +105,61 @@ public class AdsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ads, container, false);
+        View view = inflater.inflate(R.layout.fragment_ads, container, false);
+        listePub = view.findViewById(R.id.liste_pubs);
+
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        if(firebaseAuth.getCurrentUser() != null){
+            firebaseUser = firebaseAuth.getCurrentUser();
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference();
+            storage = FirebaseStorage.getInstance();
+            storageRef = storage.getReference();
+        }
+
+        databaseReference.child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot child : children) {
+                    InfoUser user = child.getValue(InfoUser.class);
+                    if(user.getE_mail().toString().equals(firebaseUser.getEmail().toString())){
+                        city = user.getCity();
+                    }
+                }
+
+                databaseReference.child("pub").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        pubs = new ArrayList<Pub>();
+                        for (DataSnapshot child: dataSnapshot.getChildren()) {
+                            Pub pub = child.getValue(Pub.class);
+                            if(pub.getLocalisation().equals(city)){
+                                pubs.add(pub);
+                            }
+                        }
+                        AdsAdapter adapter = new AdsAdapter(getActivity(), (ArrayList<Pub>) pubs);
+                        listePub.setLayoutManager(new LinearLayoutManager(getContext()));
+                        listePub.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -91,16 +186,8 @@ public class AdsFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

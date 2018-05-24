@@ -145,12 +145,6 @@ public class NewsActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
     class EventRegistry extends AsyncTask<Void, Void, String>{
         String query;
         String lang;
@@ -242,5 +236,11 @@ public class NewsActivity extends AppCompatActivity {
         protected void onCancelled() {
             Toast.makeText(getApplicationContext(), "canceelled!!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
