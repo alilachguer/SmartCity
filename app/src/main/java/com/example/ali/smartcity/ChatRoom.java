@@ -71,7 +71,6 @@ public class ChatRoom extends AppCompatActivity {
                 DataSnapshot dataSnapshotPosts = null;
                 for (DataSnapshot child: children) {
                     Groupe grp = child.getValue(Groupe.class);
-                    Toast.makeText(getBaseContext(), groupeName, Toast.LENGTH_LONG).show();
                     if(grp.getNom().equals(groupeName)){
                         //groupe = grp;
                         groupeId = child.getKey().toString();
@@ -116,10 +115,18 @@ public class ChatRoom extends AppCompatActivity {
         messageArea = (EditText)findViewById(R.id.messageArea);
         scrollView = (ScrollView)findViewById(R.id.scrollView);
 
+        messageArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getBaseContext(), "dldld", Toast.LENGTH_LONG).show();
+            }
+        });
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference.child(groupeId).child("posts").push()
+                if(!messageArea.getText().toString().matches(""))
+                    databaseReference.child(groupeId).child("posts").push()
                       .setValue(new Message(firebaseUser.getEmail().toString(), messageArea.getText().toString()));
             }
         });

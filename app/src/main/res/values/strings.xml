@@ -44,14 +44,10 @@
     <string name="all">All</string>
     <string name="languages">languages</string>
     <string name="category">category</string>
-
-
     <string-array name="gender_array">
         <item>Male</item>
         <item>Female</item>
     </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_weather">WeatherActivity</string>
 

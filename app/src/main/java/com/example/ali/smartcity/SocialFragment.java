@@ -28,12 +28,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ali.smartcity.data.AdsAdapter;
 import com.example.ali.smartcity.data.Groupe;
 import com.example.ali.smartcity.data.GroupeAdapter;
 import com.example.ali.smartcity.data.InfoUser;
 import com.example.ali.smartcity.data.Message;
 import com.example.ali.smartcity.data.NewsAdapter;
 import com.example.ali.smartcity.data.NewsHolder;
+import com.example.ali.smartcity.data.Pub;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -61,7 +63,7 @@ public class SocialFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    ListView listeGroupes;
+    RecyclerView listeGroupes;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
@@ -107,6 +109,7 @@ public class SocialFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_social, container, false);
         listeGroupes = view.findViewById(R.id.groupes);
         floatingActionButton = view.findViewById(R.id.ajouter_groupe);
+        groupes = new ArrayList<Groupe>();
 
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() != null){
@@ -138,7 +141,6 @@ public class SocialFragment extends Fragment {
                                     Groupe groupe = child.getValue(Groupe.class);
                                     if(groupe.getNom().equals(groupeName)){
                                         exists = "existe";
-                                        Toast.makeText(getContext(), "le groupe existe deja :" + groupe.getNom(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                                 if (!exists.equals("existe")){
@@ -146,8 +148,7 @@ public class SocialFragment extends Fragment {
                                     groupe.setNom(groupeName);
                                     //groupe.getMembres().getUsers().add(firebaseUser.getEmail());
                                     groupe.getPosts().setMessage(new Message(firebaseUser.getEmail(), "hello"));
-                                    databaseReference.push()
-                                          .setValue(groupe);
+                                    databaseReference.push().setValue(groupe);
                                 }
                             }
 
@@ -175,7 +176,8 @@ public class SocialFragment extends Fragment {
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     groupes.add(child.getValue(Groupe.class));
                 }
-                GroupeAdapter adapter = new GroupeAdapter(getActivity(), 0, (ArrayList<Groupe>) groupes);
+                GroupeAdapter adapter = new GroupeAdapter(groupes, getContext());
+                listeGroupes.setLayoutManager(new LinearLayoutManager(getContext()));
                 listeGroupes.setAdapter(adapter);
             }
 
@@ -185,6 +187,7 @@ public class SocialFragment extends Fragment {
             }
         });
 
+        /***
         listeGroupes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -194,6 +197,7 @@ public class SocialFragment extends Fragment {
                 startActivity(intent);
             }
         });
+         */
         return view;
     }
 

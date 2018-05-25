@@ -2,76 +2,58 @@ package com.example.ali.smartcity.data;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.ali.smartcity.ArticleReader;
+import com.example.ali.smartcity.ChatRoom;
 import com.example.ali.smartcity.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-public class GroupeAdapter extends ArrayAdapter<Groupe> {
+public class GroupeAdapter extends RecyclerView.Adapter<NewsHolder> {
 
-    private Activity activity;
-    private ArrayList<Groupe> groupes;
-    private static LayoutInflater inflater = null;
+    private List<Groupe> groupes;
+    private Context context;
 
-    public GroupeAdapter (Activity activity, int textViewResourceId, ArrayList<Groupe> groupes) {
-        super(activity, textViewResourceId, groupes);
-        try {
-            this.activity = activity;
-            this.groupes = groupes;
-            inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        } catch (Exception e) {
-
-        }
+    public GroupeAdapter(List<Groupe> articles, Context context) {
+        this.groupes = articles;
+        this.context = context;
     }
 
-    public int getCount() {
-        return groupes.size();
+    @Override
+    public NewsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.news_item, parent, false);
+        return new NewsHolder(view);
     }
 
-    public Posts getItem(Posts position) {
-        return position;
-    }
+    @Override
+    public void onBindViewHolder(final NewsHolder holder, int position) {
+        final Groupe groupe = groupes.get(position);
+        holder.title.setText(groupe.getNom());
 
-    public long getItemId(int position) {
-        return position;
-    }
-
-    public static class ViewHolder {
-        public TextView display_name;
-        public TextView groupeId;
-    }
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View vi = convertView;
-        final ViewHolder holder;
-        try {
-            if (convertView == null) {
-                vi = inflater.inflate(R.layout.news_item, null);
-                holder = new ViewHolder();
-                holder.display_name = (TextView) vi.findViewById(R.id.news_item_title);
-                holder.groupeId = (TextView) vi.findViewById(R.id.news_item_date);
-
-                vi.setTag(holder);
-            } else {
-                holder = (ViewHolder) vi.getTag();
+        holder.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void OnClick(View view, int position) {
+                Intent intent = new Intent(context, ChatRoom.class);
+                intent.putExtra("groupe", groupe.getNom());
+                context.startActivity(intent);
             }
+        });
+    }
 
-            holder.display_name.setText(groupes.get(position).nom);
-            holder.groupeId.setText(groupes.get(position).id);
-
-
-        } catch (Exception e) {
-
-
-        }
-        return vi;
+    @Override
+    public int getItemCount() {
+        return groupes.size();
     }
 
 
